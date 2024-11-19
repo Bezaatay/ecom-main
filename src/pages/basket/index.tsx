@@ -60,8 +60,11 @@ const BasketScreen = ({ navigation }: IndexRouteType) => {
     };
 
     const handleBuyBtn = () => {
-        Alert.alert("Satın alım başarıyla gerçekleşti!")
+        console.log("home");
+
         navigation.navigate('Home')
+        console.log("home2");
+
     }
 
     return (

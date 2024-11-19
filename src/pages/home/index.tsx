@@ -13,9 +13,13 @@ import { fetchProducts, getProductsByPriceFilter, getProductsByTitle } from '../
 import { useDebounce } from '../../hooks/useDebounce';
 import useFavoriteStore from '../../store/favoriteStore';
 import { storage } from '../../storage/storage';
+import { useSharedValue } from 'react-native-reanimated';
 
 const HomeScreen = ({ navigation }: IndexRouteType) => {
     const [products, setProducts] = useState<Product[]>([]);
+
+    const deneme = useSharedValue<number>(0);
+
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [query, setQuery] = useState<string>('');
     const debouncedQuery = useDebounce(query);
