@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../components/button/button';
-import BrightnessModule from './BrightnessModule';
+import Button from './button/button';
+import BrightnessModule from '../modules/BrightnessModule';
 
 const AppModule = () => {
     var brightnessLevel: number;
