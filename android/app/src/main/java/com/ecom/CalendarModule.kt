@@ -21,7 +21,7 @@ class CalendarModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
 
     @ReactMethod
-    fun createCalendarEvent(name: String, location: String, promise: Promise) {
+    fun createCalendarEvent(promise: Promise) {
         try {
             val eventId = 123 
             promise.resolve(eventId)
