@@ -14,6 +14,9 @@ import { useDebounce } from '../../hooks/useDebounce';
 import useFavoriteStore from '../../store/favoriteStore';
 import { storage } from '../../storage/storage';
 import { useSharedValue } from 'react-native-reanimated';
+import OrientationModule from '../../modules/Orientation';
+import { OrientationType } from '../../modules/OrientationType';
+import { addLockListener, removeAllListeners } from '../../modules/OrientationManager';
 
 const HomeScreen = ({ navigation }: IndexRouteType) => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -28,14 +31,23 @@ const HomeScreen = ({ navigation }: IndexRouteType) => {
     const { fav, addFav, removeFav, loadFavorites } = useFavoriteStore();
     const [uniqueProductsCount, setUniqueProductsCount] = useState<number>(0);
     const [isBarFilterVisible, setIsBarFilterVisible] = useState<boolean>(false)
+    const [currentOrientation, setCurrentOrientation] = useState<OrientationType | undefined>(undefined);
 
     useEffect(() => {
+        addLockListener((orientation: OrientationType) => { setCurrentOrientation(orientation) })
+        console.log(currentOrientation);
+
+        OrientationModule.lockToPortrait()
         loadFavorites();
 
         fetchProducts().then((products) => {
             setProducts(products);
             setIsBarVisible(false);
         });
+
+        return () => {
+            removeAllListeners();
+        }
     }, []);
 
     useEffect(() => {
@@ -114,55 +126,55 @@ const HomeScreen = ({ navigation }: IndexRouteType) => {
 
         setIsBarFilterVisible(false)
     }
-
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Header onPressRightIcon={() => navigation.navigate("Basket")}
-                    onPressleftIcon={() => navigation.navigate("Favorites")}
-                    title={Strings.passo_ecom}
-                    badgeCount={uniqueProductsCount}
-                />
-            </View>
-            <View style={styles.searchBar}>
-                <SearchBar visibility={isBarFilterVisible} value={query} onChangeText={handleSearch} onPress={toggleModal} />
-            </View>
-            {isBarVisible && (
-                <View style={styles.hide_bar}>
-                    <Text style={styles.result_text}>{Strings.results_found}</Text>
-                    <LinkButton text={Strings.clean_search} onPress={handleClear} />
-                </View>
-            )}
-            <View style={styles.items}>
-                {isEmpty ? (
-                    <Text style={{ margin: 10 }}>{Strings.cannot_found_product}</Text>
-                ) : (
-                    <FlatList
-                        data={products}
-                        numColumns={2}
-                        keyExtractor={(item) => item.id.toString()}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <View style={styles.cardContainer}>
-                                <HomeCardItem
-                                    id={item.id}
-                                    images={item.images[0]}
-                                    name={item.title}
-                                    description={item.description}
-                                    price={item.price}
-                                    onPress={() => navigation.navigate('ProductDetail', { id: item.id })}
-                                    isFavorite={fav.some((favItem) => favItem.product.id === item.id)}
-                                    favOnPress={() => handleFav(item)}
-                                />
-                            </View>
-                        )}
+        currentOrientation === "PORTRAIT" ?
+            (<View style={styles.container}>
+                <View style={styles.header}>
+                    <Header onPressRightIcon={() => navigation.navigate("Basket")}
+                        onPressleftIcon={() => navigation.navigate("Favorites")}
+                        title={Strings.passo_ecom}
+                        badgeCount={uniqueProductsCount}
                     />
+                </View>
+                <View style={styles.searchBar}>
+                    <SearchBar visibility={isBarFilterVisible} value={query} onChangeText={handleSearch} onPress={toggleModal} />
+                </View>
+                {isBarVisible && (
+                    <View style={styles.hide_bar}>
+                        <Text style={styles.result_text}>{Strings.results_found}</Text>
+                        <LinkButton text={Strings.clean_search} onPress={handleClear} />
+                    </View>
                 )}
-            </View>
-            <View style={{ flex: 1 }}>
-                <BottomSheet visibility={isModalVisible} onClose={toggleModal} onFilter={handleFilterValues} onClearFilter={handleFilterClear} />
-            </View>
-        </View>
+                <View style={styles.items}>
+                    {isEmpty ? (
+                        <Text style={{ margin: 10 }}>{Strings.cannot_found_product}</Text>
+                    ) : (
+                        <FlatList
+                            data={products}
+                            numColumns={2}
+                            keyExtractor={(item) => item.id.toString()}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item }) => (
+                                <View style={styles.cardContainer}>
+                                    <HomeCardItem
+                                        id={item.id}
+                                        images={item.images[0]}
+                                        name={item.title}
+                                        description={item.description}
+                                        price={item.price}
+                                        onPress={() => navigation.navigate('ProductDetail', { id: item.id })}
+                                        isFavorite={fav.some((favItem) => favItem.product.id === item.id)}
+                                        favOnPress={() => handleFav(item)}
+                                    />
+                                </View>
+                            )}
+                        />
+                    )}
+                </View>
+                <View style={{ flex: 1 }}>
+                    <BottomSheet visibility={isModalVisible} onClose={toggleModal} onFilter={handleFilterValues} onClearFilter={handleFilterClear} />
+                </View>
+            </View>) : null
     );
 };
 

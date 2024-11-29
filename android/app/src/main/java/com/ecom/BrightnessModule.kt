@@ -2,8 +2,6 @@ package com.ecom
 
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import com.facebook.react.bridge.Promise
@@ -42,7 +40,6 @@ class BrightnessModule(reactContext: ReactApplicationContext) : ReactContextBase
                 promise.resolve("Parlaklık seviyesi değiştirildi: $brightness")
             } else {
                 promise.reject("PERMISSION_DENIED", "WRITE_SETTINGS izni gerekli.")
-                requestWriteSettingsPermission(context)
             }
         } catch (e: Exception) {
             promise.reject("ERROR", "Parlaklık seviyesi değiştirilemedi: ${e.message}")
@@ -57,15 +54,4 @@ class BrightnessModule(reactContext: ReactApplicationContext) : ReactContextBase
         // Parlaklığı 0-1 aralığına ölçekle
         return (brightness - minBrightness).toFloat() / (maxBrightness - minBrightness)
     }
-
-
-    fun requestWriteSettingsPermission(context: Context) {
-        if (!Settings.System.canWrite(context)) {
-            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-            intent.data = Uri.parse("package:${context.packageName}")
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        }
-    }
-
 }

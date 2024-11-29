@@ -15,5 +15,5 @@ class ModulePackage : ReactPackage {
 
     override fun createNativeModules(
         reactContext: ReactApplicationContext
-    ): MutableList<NativeModule> = listOf(BrightnessModule(reactContext)).toMutableList()
+    ): MutableList<NativeModule> = listOf(BrightnessModule(reactContext),OrientationModule(reactContext)).toMutableList()
 }

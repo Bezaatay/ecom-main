@@ -8,9 +8,8 @@ export default function App() {
 
   return (
     <>
-      {/* <AppNavigation />
-      <Loader /> */}
-      <AppModule />
+      <AppNavigation />
+      <Loader />
     </>
   );
 }
