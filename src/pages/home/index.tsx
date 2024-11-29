@@ -15,7 +15,7 @@ import useFavoriteStore from '../../store/favoriteStore';
 import { storage } from '../../storage/storage';
 import { useSharedValue } from 'react-native-reanimated';
 import OrientationModule from '../../modules/Orientation';
-import { OrientationType } from '../../modules/OrientationType';
+import { OrientationType } from '../../types/OrientationType';
 import { addLockListener, removeAllListeners } from '../../modules/OrientationManager';
 
 const HomeScreen = ({ navigation }: IndexRouteType) => {

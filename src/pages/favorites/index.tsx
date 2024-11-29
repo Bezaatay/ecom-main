@@ -9,7 +9,7 @@ import useFavoriteStore from '../../store/favoriteStore';
 import HomeCardItem from '../../components/homeCardItem/HomeCardItem';
 import { Product } from '../../api/models/ProductModel';
 import React, { useEffect, useState } from 'react';
-import { OrientationType } from '../../modules/OrientationType';
+import { OrientationType } from '../../types/OrientationType';
 import OrientationModule from '../../modules/Orientation';
 import { addLockListener, removeAllListeners } from '../../modules/OrientationManager';
 

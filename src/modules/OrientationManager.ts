@@ -1,5 +1,5 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
-import { OrientationType } from './OrientationType';
+import { OrientationType } from '../types/OrientationType';
 
 const { OrientationModule } = NativeModules;
 const LocalEventEmitter = new NativeEventEmitter(OrientationModule);
