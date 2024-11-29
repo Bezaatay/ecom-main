@@ -3,13 +3,15 @@ import AppNavigation from './src/navigation';
 import Loader from './src/components/loader/component';
 import { Button, NativeModules } from 'react-native';
 import AppModule from './src/components/appModule';
+import ClipText from './src/modules/denemeler/ClipText';
 
 export default function App() {
 
   return (
     <>
-      <AppNavigation />
-      <Loader />
+      {/* <AppNavigation />
+      <Loader /> */}
+      <ClipText></ClipText>
     </>
   );
 }
