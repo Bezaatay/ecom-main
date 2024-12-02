@@ -5,4 +5,5 @@ export type NavigationParam = {
     };
     Basket: undefined;
     Favorites: undefined;
+    Profile: undefined;
 }
